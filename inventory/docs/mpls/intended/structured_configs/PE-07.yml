@@ -1,5 +1,7 @@
 aaa_root:
   disabled: true
+clock:
+  timezone: Australia/Sydney
 config_end: true
 daemon_terminattr:
   cvaddrs:
@@ -14,7 +16,7 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet3
-  description: P2P_PE-03_Ethernet7/1
+  description: P2P_RR-03_Ethernet7/1
   shutdown: false
   mtu: 2000
   ip_address: 192.168.12.0/31
@@ -25,9 +27,9 @@ ethernet_interfaces:
   isis_hello_padding: true
   mpls:
     ip: true
-  peer: PE-03
+  peer: RR-03
   peer_interface: Ethernet7/1
-  peer_type: p
+  peer_type: rr
   switchport:
     enabled: false
 - name: Ethernet4
@@ -62,6 +64,13 @@ ethernet_interfaces:
   peer: PE-08
   peer_interface: Ethernet7
   peer_type: pe
+  switchport:
+    enabled: false
+- name: Ethernet1
+  shutdown: false
+  vrf: groq-inside
+  ip_address: 1.1.1.1/31
+  peer_type: l3_interface
   switchport:
     enabled: false
 hostname: PE-07
@@ -137,6 +146,11 @@ router_bgp:
     bfd: true
     send_community: all
     maximum_routes: 0
+  neighbors:
+  - ip_address: 10.1.0.3
+    peer_group: MPLS-OVERLAY-PEERS
+    peer: RR-03
+    description: RR-03_Loopback0
   address_family_evpn:
     neighbor_default:
       encapsulation: mpls
@@ -148,6 +162,31 @@ router_bgp:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
       activate: false
+  vrfs:
+  - name: groq-inside
+    rd: 10.1.0.7:800
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 800:800
+      export:
+      - address_family: evpn
+        route_targets:
+        - 800:800
+    router_id: 10.1.0.7
+    neighbors:
+    - ip_address: 1.1.1.0
+      remote_as: '65800'
+      description: to-CE-01
+      send_community: extended
+    redistribute:
+      connected:
+        enabled: true
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 1.1.1.0
+        activate: true
 router_isis:
   instance: CORE
   net: 49.0001.0100.0100.0007.00
@@ -194,3 +233,6 @@ vlan_internal_order:
 vrfs:
 - name: default
   ip_routing: false
+- name: groq-inside
+  ip_routing: true
+  tenant: GROQ

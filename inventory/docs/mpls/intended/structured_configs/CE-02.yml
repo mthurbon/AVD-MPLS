@@ -1,5 +1,7 @@
 aaa_root:
   disabled: true
+clock:
+  timezone: Australia/Sydney
 config_end: true
 daemon_terminattr:
   cvaddrs:
@@ -12,6 +14,21 @@ daemon_terminattr:
   taillogs: null
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  shutdown: false
+  vrf: groq-inside
+  ip_address: 1.1.1.4/31
+  peer_type: l3_interface
+  switchport:
+    enabled: false
+- name: Ethernet2
+  shutdown: false
+  vrf: groq-inside
+  ip_address: 1.1.1.6/31
+  peer_type: l3_interface
+  switchport:
+    enabled: false
 hostname: CE-02
 ip_igmp_snooping:
   globally_enabled: true
@@ -59,6 +76,46 @@ ntp:
   - name: 192.168.0.6
     preferred: true
     vrf: default
+router_bgp:
+  as: '65800'
+  router_id: 10.10.0.2
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  vrfs:
+  - name: groq-inside
+    rd: 10.10.0.2:800
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 800:800
+      export:
+      - address_family: evpn
+        route_targets:
+        - 800:800
+    router_id: 10.10.0.2
+    neighbors:
+    - ip_address: 1.1.1.5
+      remote_as: '65800'
+      description: to-PE-09
+      send_community: extended
+    - ip_address: 1.1.1.7
+      remote_as: '65800'
+      description: to-PE-10
+      send_community: extended
+    redistribute:
+      connected:
+        enabled: true
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 1.1.1.5
+        activate: true
+      - ip_address: 1.1.1.7
+        activate: true
 router_isis:
   instance: EVPN_UNDERLAY
   net: 49.0001.0100.1000.0002.00
@@ -90,11 +147,27 @@ static_routes:
 terminal:
   length: 45
 transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan200
+  description: Vlan_200_groq_inside
+  shutdown: false
+  vrf: groq-inside
+  ip_address: 172.16.200.1/24
+  tenant: GROQ
+  tags:
+  - CE-02
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
+vlans:
+- id: 200
+  name: Vlan_200_groq_inside
+  tenant: GROQ
 vrfs:
 - name: default
   ip_routing: false
+- name: groq-inside
+  ip_routing: true
+  tenant: GROQ

@@ -15,11 +15,11 @@ daemon_terminattr:
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet3/1
-  description: P2P_RR-03_Ethernet10/1
+- name: Ethernet7/1
+  description: P2P_PE-07_Ethernet3
   shutdown: false
   mtu: 2000
-  ip_address: 192.168.12.13/31
+  ip_address: 192.168.12.1/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
@@ -27,16 +27,16 @@ ethernet_interfaces:
   isis_hello_padding: true
   mpls:
     ip: true
-  peer: RR-03
-  peer_interface: Ethernet10/1
-  peer_type: rr
+  peer: PE-07
+  peer_interface: Ethernet3
+  peer_type: pe
   switchport:
     enabled: false
-- name: Ethernet4/1
-  description: P2P_PE-04_Ethernet10/1
+- name: Ethernet8/1
+  description: P2P_PE-08_Ethernet3
   shutdown: false
   mtu: 2000
-  ip_address: 192.168.12.21/31
+  ip_address: 192.168.12.9/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
@@ -44,33 +44,16 @@ ethernet_interfaces:
   isis_hello_padding: true
   mpls:
     ip: true
-  peer: PE-04
-  peer_interface: Ethernet10/1
-  peer_type: p
-  switchport:
-    enabled: false
-- name: Ethernet6/1
-  description: P2P_PE-06_Ethernet10/1
-  shutdown: false
-  mtu: 2000
-  ip_address: 192.168.12.23/31
-  isis_enable: CORE
-  isis_metric: 50
-  isis_network_point_to_point: true
-  isis_circuit_type: level-2
-  isis_hello_padding: true
-  mpls:
-    ip: true
-  peer: PE-06
-  peer_interface: Ethernet10/1
-  peer_type: p
+  peer: PE-08
+  peer_interface: Ethernet3
+  peer_type: pe
   switchport:
     enabled: false
 - name: Ethernet9/1
-  description: P2P_PE-09_Ethernet10/1
+  description: P2P_PE-09_Ethernet3/1
   shutdown: false
   mtu: 2000
-  ip_address: 192.168.12.25/31
+  ip_address: 192.168.12.10/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
@@ -79,20 +62,45 @@ ethernet_interfaces:
   mpls:
     ip: true
   peer: PE-09
-  peer_interface: Ethernet10/1
+  peer_interface: Ethernet3/1
   peer_type: pe
   switchport:
     enabled: false
-- name: Ethernet2/1
+- name: Ethernet10/1
+  description: P2P_PE-10_Ethernet3/1
   shutdown: false
-  vrf: groq-inside
-  ip_address: 1.1.1.7/31
-  peer_type: l3_interface
+  mtu: 2000
+  ip_address: 192.168.12.12/31
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  isis_hello_padding: true
+  mpls:
+    ip: true
+  peer: PE-10
+  peer_interface: Ethernet3/1
+  peer_type: pe
   switchport:
     enabled: false
-hostname: PE-10
-ip_igmp_snooping:
-  globally_enabled: true
+- name: Ethernet4/1
+  description: P2P_PE-04_Ethernet3/1
+  shutdown: false
+  mtu: 2000
+  ip_address: 192.168.12.14/31
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  isis_hello_padding: true
+  mpls:
+    ip: true
+  peer: PE-04
+  peer_interface: Ethernet3/1
+  peer_type: p
+  switchport:
+    enabled: false
+hostname: RR-03
 ip_routing: true
 is_deployed: true
 local_users:
@@ -106,11 +114,11 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 10.1.0.10/32
+  ip_address: 10.1.0.3/32
   isis_enable: CORE
   isis_passive: true
   node_segment:
-    ipv4_index: 10
+    ipv4_index: 3
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -120,7 +128,7 @@ management_interfaces:
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: default
-  ip_address: 192.168.0.110/24
+  ip_address: 192.168.0.103/24
   type: oob
   gateway: 192.168.0.6
   lldp:
@@ -147,67 +155,66 @@ router_bfd:
     min_rx: 1200
     multiplier: 3
 router_bgp:
-  as: '65900'
-  router_id: 10.1.0.10
+  as: '65100'
+  router_id: 10.1.0.3
   maximum_paths:
     paths: 4
     ecmp: 4
+  bgp_cluster_id: 10.1.0.3
   bgp:
     default:
       ipv4_unicast: false
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
     type: mpls
-    remote_as: '65900'
+    remote_as: '65100'
+    update_source: Loopback0
+    route_reflector_client: true
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+  - name: RR-OVERLAY-PEERS
+    type: mpls
+    remote_as: '65100'
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
   neighbors:
-  - ip_address: 10.1.0.3
+  - ip_address: 10.1.0.7
     peer_group: MPLS-OVERLAY-PEERS
-    peer: RR-03
-    description: RR-03_Loopback0
+    peer: PE-07
+    description: PE-07_Loopback0
+  - ip_address: 10.1.0.8
+    peer_group: MPLS-OVERLAY-PEERS
+    peer: PE-08
+    description: PE-08_Loopback0
+  - ip_address: 10.1.0.9
+    peer_group: MPLS-OVERLAY-PEERS
+    peer: PE-09
+    description: PE-09_Loopback0
+  - ip_address: 10.1.0.10
+    peer_group: MPLS-OVERLAY-PEERS
+    peer: PE-10
+    description: PE-10_Loopback0
   address_family_evpn:
     neighbor_default:
       encapsulation: mpls
-      next_hop_self_source_interface: Loopback0
     peer_groups:
+    - name: RR-OVERLAY-PEERS
+      activate: true
     - name: MPLS-OVERLAY-PEERS
       activate: true
   address_family_ipv4:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
       activate: false
-  vrfs:
-  - name: groq-inside
-    rd: 10.1.0.10:800
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 800:800
-      export:
-      - address_family: evpn
-        route_targets:
-        - 800:800
-    router_id: 10.1.0.10
-    neighbors:
-    - ip_address: 1.1.1.6
-      remote_as: '65800'
-      description: to-CE-02
-      send_community: extended
-    redistribute:
-      connected:
-        enabled: true
-    address_family_ipv4:
-      neighbors:
-      - ip_address: 1.1.1.6
-        activate: true
+    - name: RR-OVERLAY-PEERS
+      activate: false
 router_isis:
   instance: CORE
-  net: 49.0001.0100.0100.0010.00
-  router_id: 10.1.0.10
+  net: 49.0001.0100.0100.0003.00
+  router_id: 10.1.0.3
   is_type: level-2
   log_adjacency_changes: true
   timers:
@@ -223,7 +230,7 @@ router_isis:
       mode: link-protection
   segment_routing_mpls:
     enabled: true
-    router_id: 10.1.0.10
+    router_id: 10.1.0.3
 service_routing_protocols_model: multi-agent
 sflow:
   sample: 58000
@@ -234,7 +241,7 @@ sflow:
     source_interface: loopback0
   run: true
 spanning_tree:
-  root_super: true
+  mode: none
 static_routes:
 - vrf: default
   prefix: 0.0.0.0/0
@@ -250,6 +257,3 @@ vlan_internal_order:
 vrfs:
 - name: default
   ip_routing: false
-- name: groq-inside
-  ip_routing: true
-  tenant: GROQ

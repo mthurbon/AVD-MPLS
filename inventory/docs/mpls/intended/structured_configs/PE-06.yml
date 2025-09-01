@@ -1,5 +1,7 @@
 aaa_root:
   disabled: true
+clock:
+  timezone: Australia/Sydney
 config_end: true
 daemon_terminattr:
   cvaddrs:

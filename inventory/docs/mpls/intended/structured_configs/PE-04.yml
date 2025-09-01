@@ -1,5 +1,7 @@
 aaa_root:
   disabled: true
+clock:
+  timezone: Australia/Sydney
 config_end: true
 daemon_terminattr:
   cvaddrs:
@@ -48,7 +50,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet3/1
-  description: P2P_PE-03_Ethernet4/1
+  description: P2P_RR-03_Ethernet4/1
   shutdown: false
   mtu: 2000
   ip_address: 192.168.12.15/31
@@ -59,9 +61,9 @@ ethernet_interfaces:
   isis_hello_padding: true
   mpls:
     ip: true
-  peer: PE-03
+  peer: RR-03
   peer_interface: Ethernet4/1
-  peer_type: p
+  peer_type: rr
   switchport:
     enabled: false
 - name: Ethernet6/1
