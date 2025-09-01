@@ -1,0 +1,100 @@
+aaa_root:
+  disabled: true
+config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.0.5:9910
+  cvauth:
+    method: token
+    token_file: /tmp/token
+  cvvrf: default
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  taillogs: null
+enable_password:
+  disabled: true
+hostname: CE-01
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+is_deployed: true
+local_users:
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$g660X2pyq2pCKA6b$rosLMnSxCf038K1DIyf5YDjKpZSrN.k3CK5MpmC8VfKh1NEc3Ck4rsp07v52PAbURXiT822UcTSl9cmBuQ1Er.
+logging:
+  console: debugging
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.10.0.1/32
+  isis_enable: EVPN_UNDERLAY
+  isis_passive: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: default
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: default
+  ip_address: 192.168.0.101/24
+  type: oob
+  gateway: 192.168.0.6
+  lldp:
+    transmit: false
+    receive: false
+management_ssh:
+  enable: true
+metadata:
+  platform: vEOS-lab
+  fabric_name: MPLS_CORE
+ntp:
+  local_interface:
+    name: Management1
+    vrf: default
+  servers:
+  - name: 192.168.0.6
+    preferred: true
+    vrf: default
+router_isis:
+  instance: EVPN_UNDERLAY
+  net: 49.0001.0100.1000.0001.00
+  router_id: 10.10.0.1
+  is_type: level-2
+  log_adjacency_changes: true
+  timers:
+    local_convergence:
+      protected_prefixes: true
+      delay: 10000
+  address_family_ipv4:
+    enabled: true
+    maximum_paths: 4
+    fast_reroute_ti_lfa:
+      mode: link-protection
+service_routing_protocols_model: multi-agent
+sflow:
+  sample: 58000
+  vrfs:
+  - name: default
+    destinations:
+    - destination: 127.0.0.1
+    source_interface: loopback0
+  run: true
+static_routes:
+- vrf: default
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.0.6
+terminal:
+  length: 45
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: default
+  ip_routing: false

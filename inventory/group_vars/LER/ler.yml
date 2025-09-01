@@ -1,0 +1,41 @@
+---
+
+type: pe
+
+pe: # dynamic_key: node_type
+  defaults:
+    filter:
+        tags: [ pe ]
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.1.0.0/25
+    bgp_as: 65900
+    mpls_route_reflectors: [ PE-09 ]
+    overlay_address_families:
+      - evpn
+    
+  nodes:
+    - name: PE-07
+      id: 7
+      mgmt_ip: 192.168.0.107/24
+      filter:
+        tags: [ PE-07 ]
+      spanning_tree_root_super: true
+    - name: PE-08
+      id: 8
+      mgmt_ip: 192.168.0.108/24
+      filter:
+        tags: [ PE-08 ]
+      spanning_tree_root_super: true
+    - name: PE-09
+      id: 9
+      mgmt_ip: 192.168.0.109/24
+      filter:
+        tags: [ PE-09 ]
+      spanning_tree_root_super: true
+    - name: PE-10
+      id: 10
+      mgmt_ip: 192.168.0.110/24
+      filter:
+        tags: [ PE-10 ]
+      spanning_tree_root_super: true
+

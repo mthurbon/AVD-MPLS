@@ -1,0 +1,38 @@
+---
+ansible_connection: ansible.netcommon.httpapi
+ansible_network_os: arista.eos.eos
+ansible_user: cvpadmin
+ansible_password: cvp123!
+ansible_become: true
+ansible_become_method: enable
+ansible_httpapi_use_ssl: true
+ansible_httpapi_validate_certs: false
+ansible_httpapi_ciphers: AES256-SHA:DHE-RSA-AES256-SHA:AES128-SHA:DHE-RSA-AES128-SHA
+
+fabric_name: MPLS_CORE
+
+underlay_routing_protocol: isis-sr
+overlay_routing_protocol: ibgp
+
+p2p_uplinks_mtu: 2000
+
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
+
+isis_ti_lfa:
+  enabled: true
+  protection: link
+
+csc_sflow:
+  sample: 58000
+  vrfs:
+    - name: default
+      destinations:
+        - destination: 127.0.0.1
+      source_interface: loopback0
+  run: true
+
+#ACT Default Configuration
+eos_cli: "{{ lookup('file', 'act_default.conf') }}"

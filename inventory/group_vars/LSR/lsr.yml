@@ -1,0 +1,25 @@
+---
+type: p
+
+p: # dynamic_key: node_type
+  defaults:
+    filter:
+        tags: [ p ]
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.1.0.0/25
+    
+  nodes:
+    - name: PE-03
+      id: 3
+      mgmt_ip: 192.168.0.103/24
+    - name: PE-04
+      id: 4
+      mgmt_ip: 192.168.0.104/24
+    - name: PE-06
+      id: 6
+      mgmt_ip: 192.168.0.106/24
+
+
+
+
+

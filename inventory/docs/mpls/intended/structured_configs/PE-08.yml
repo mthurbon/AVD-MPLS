@@ -1,0 +1,196 @@
+aaa_root:
+  disabled: true
+config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.0.5:9910
+  cvauth:
+    method: token
+    token_file: /tmp/token
+  cvvrf: default
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  taillogs: null
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet7
+  description: P2P_PE-07_Ethernet8
+  shutdown: false
+  mtu: 2000
+  ip_address: 192.168.12.5/31
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  isis_hello_padding: true
+  mpls:
+    ip: true
+  peer: PE-07
+  peer_interface: Ethernet8
+  peer_type: pe
+  switchport:
+    enabled: false
+- name: Ethernet4
+  description: P2P_PE-04_Ethernet8/1
+  shutdown: false
+  mtu: 2000
+  ip_address: 192.168.12.6/31
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  isis_hello_padding: true
+  mpls:
+    ip: true
+  peer: PE-04
+  peer_interface: Ethernet8/1
+  peer_type: p
+  switchport:
+    enabled: false
+- name: Ethernet3
+  description: P2P_PE-03_Ethernet8/1
+  shutdown: false
+  mtu: 2000
+  ip_address: 192.168.12.8/31
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  isis_hello_padding: true
+  mpls:
+    ip: true
+  peer: PE-03
+  peer_interface: Ethernet8/1
+  peer_type: p
+  switchport:
+    enabled: false
+hostname: PE-08
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+is_deployed: true
+local_users:
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$g660X2pyq2pCKA6b$rosLMnSxCf038K1DIyf5YDjKpZSrN.k3CK5MpmC8VfKh1NEc3Ck4rsp07v52PAbURXiT822UcTSl9cmBuQ1Er.
+logging:
+  console: debugging
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.1.0.8/32
+  isis_enable: CORE
+  isis_passive: true
+  node_segment:
+    ipv4_index: 8
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: default
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: default
+  ip_address: 192.168.0.108/24
+  type: oob
+  gateway: 192.168.0.6
+  lldp:
+    transmit: false
+    receive: false
+management_ssh:
+  enable: true
+metadata:
+  platform: vEOS-lab
+  fabric_name: MPLS_CORE
+mpls:
+  ip: true
+ntp:
+  local_interface:
+    name: Management1
+    vrf: default
+  servers:
+  - name: 192.168.0.6
+    preferred: true
+    vrf: default
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
+router_bgp:
+  as: '65900'
+  router_id: 10.1.0.8
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: MPLS-OVERLAY-PEERS
+    type: mpls
+    remote_as: '65900'
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+  address_family_evpn:
+    neighbor_default:
+      encapsulation: mpls
+      next_hop_self_source_interface: Loopback0
+    peer_groups:
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: MPLS-OVERLAY-PEERS
+      activate: false
+router_isis:
+  instance: CORE
+  net: 49.0001.0100.0100.0008.00
+  router_id: 10.1.0.8
+  is_type: level-2
+  log_adjacency_changes: true
+  timers:
+    local_convergence:
+      protected_prefixes: true
+      delay: 10000
+  advertise:
+    passive_only: false
+  address_family_ipv4:
+    enabled: true
+    maximum_paths: 4
+    fast_reroute_ti_lfa:
+      mode: link-protection
+  segment_routing_mpls:
+    enabled: true
+    router_id: 10.1.0.8
+service_routing_protocols_model: multi-agent
+sflow:
+  sample: 58000
+  vrfs:
+  - name: default
+    destinations:
+    - destination: 127.0.0.1
+    source_interface: loopback0
+  run: true
+spanning_tree:
+  root_super: true
+static_routes:
+- vrf: default
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.0.6
+terminal:
+  length: 45
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: default
+  ip_routing: false

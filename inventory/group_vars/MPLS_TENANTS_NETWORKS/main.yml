@@ -1,0 +1,7 @@
+---
+# Tenant Networks (VRFs)
+network_services_keys: # dynamic_key: network_services
+    - name: tenants # preserving default value
+    #- name: red
+    #- name: blue
+    # - name: GREEN

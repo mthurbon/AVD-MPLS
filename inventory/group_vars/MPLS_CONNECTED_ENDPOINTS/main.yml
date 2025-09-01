@@ -1,0 +1,55 @@
+---
+network_ports:
+#Customer RED
+  - switches: [ ce-1 ]
+    switch_ports: [ Ethernet1 ]
+    description: Host-1 Eth1
+    mode: access
+    vlans: 100
+  - switches: [ ce-2 ]
+    switch_ports: [ Ethernet1 ]
+    description: Host-2 Eth1
+    mode: access
+    vlans: 200
+
+#Customer Blue
+  - switches: [ pe-1, pe-3 ]
+    switch_ports: [ Ethernet52/1, Ethernet52/1 ]
+    description: PC to CE-4 
+    mode: trunk
+    enabled: true 
+    vlans: 300
+    port_channel:
+      enabled: true
+      channel_id: 10
+      mode: active
+      # structured_config:
+      #   evpn_ethernet_segment:
+      #     identifier: 0000:0000:0000:0101:0004
+      #     redundancy: all-active
+      #     route_target: 00:00:01:01:00:04
+    
+  - switches: [ ce-4, ce-4 ]
+    switch_ports: [ Ethernet25/1, Ethernet26/1 ]
+    description: PC to PE1 & PE3
+    mode: trunk
+    port_channel:
+      mode: active
+      channel_id: 11
+      enabled: true
+  - switches: [ ce-4 ]
+    switch_ports: [ Ethernet1 ]
+    mode: access
+    vlans: 300
+  - switches: [ ce-3 ]
+    switch_ports: [ Ethernet1 ]
+    mode: access
+    vlans: 300
+  - switches: [ ce-3 ]
+    switch_ports: [ Ethernet25/1 ]
+    mode: trunk
+    vlans: 300
+  - switches: [ pe-2 ]
+    switch_ports: [ Ethernet50/1 ]
+    mode: trunk
+    vlans: 300

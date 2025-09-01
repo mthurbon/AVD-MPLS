@@ -1,0 +1,26 @@
+---
+- name: Build Switch configuration and Deploy to CVP
+  hosts: MPLS_CORE
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: generate intended variables
+      import_role:
+        name: arista.avd.eos_designs
+    - name: generate device intended config and documentation
+      import_role:
+        name: arista.avd.eos_cli_config_gen
+
+- name: Configuration deployment
+  hosts: MPLS_CORE
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Deploy configurations and tags to CloudVision
+      ansible.builtin.import_role:
+        name: arista.avd.cv_deploy
+      vars:
+        cv_inventory_hostname: CVAAS
+        cv_verify_certs: false
+        cv_token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJkaWQiOjc1NDMwMzQyMzQ4MzU4Mjg5NjgsImRzbiI6ImF2ZCIsImRzdCI6ImFjY291bnQiLCJleHAiOjE3NzMxNDc1OTksImlhdCI6MTc1NjI2NzkwNSwib2dpIjozLCJvZ24iOiJEZWZhdWx0Iiwic2lkIjoiMDY0MmUzZmJlNmI3NWRiY2MwY2NkMjdkMTA5YmFjMGIzMGIyNDcxOGVlNThhMWEwMDA0MDMwZDczMzVmYmM4Mi1jVzJCd01HMDRNWW1IdVJKY0NjanB1OFNUei10U19fWkhNd2p5MmNsIn0.sFtYIsOhaEWOywbYH_w2aMFN8HgkWxEqqYYLC7eKp7z0kI9FslG8eP6Ky2of6a5WVCEC5pxZZ5BykE_4iSjoY7_1W-Wr5mXx7I2syU4i3K9CNakSXYIb_PKyijyjpJSkuHYLNX39TRdmMjfQVeEr7pNI3CDkwYLTORqeY8tKTnSB_TPRTEdQlha5mM3Qe16bgniaZFiSUe16q_PbmHHt5voPttcflIgWQRY80WpCUabtjMa1ZjStg6LxHYQjj0dQi0s3i_OTh9Az781Po0VVrhACRU2NBodKacwjmRam3KLCAZbTPoNRNPX4pPBhmI_bp7Y5BfCloBeE6j7Sf77hpzoCQxafWBxWFCeSKhhh5ISTxTVxYIH28Runfd6UJo6Mppr46dW3_issaPR14Uzt5WSsfZ7kgVQVTNH-CzttqZ7eNXQ4cEpFlgoNyM_grcUcyTmXs6AUfftbUaC621C3O-sEzieuaIR2PZ8_rLF1iXXWcpmZeigoBk-03ypZCw_AmWke-r_baOZm9hJ0nCZVV6YCZKn5yEnC0TvFUWSU5SlynBvR7H4SNRw5NH3R2Q-oB1FdI4JCIVANDqqVIzxayAvehFucghYNxHpFRh4PG8D2F9hOlDJ54cduIQXM_xiOnvdtaIW3RPAb_0htDJOSx8LazUMIBCt-wfJFEsiSaQA

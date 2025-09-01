@@ -1,0 +1,25 @@
+---
+anta.tests.software:
+  - VerifyEOSVersion:
+      versions:
+        - 4.34.2F
+
+anta.tests.routing:
+  isis:
+    - VerifyISISInterfaceMode:
+        interfaces:
+          - name: Loopback0
+            mode: passive
+
+    - VerifyISISSegmentRoutingDataplane:
+        instances:
+          - name: CORE
+            vrf: default
+            dataplane: MPLS
+
+#  generic:
+#    - VerifyRoutingTableEntry:
+#        vrf: corp
+#        routes:
+#          - 172.16.200.0
+#          - 172.16.100.0

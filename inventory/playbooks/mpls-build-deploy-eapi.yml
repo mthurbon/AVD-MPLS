@@ -1,0 +1,16 @@
+---
+- name: Build Switch configuration and Deploy Eapi
+  hosts: MPLS_CORE
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: generate intended variables
+      import_role:
+        name: arista.avd.eos_designs
+    - name: generate device intended config and documentation
+      import_role:
+        name: arista.avd.eos_cli_config_gen
+    - name: deply configuration to uplink_switches
+      import_role:
+        name: arista.avd.eos_config_deploy_eapi

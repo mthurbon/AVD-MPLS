@@ -1,0 +1,8 @@
+lsprotocol
+pygls
+pyavd
+python-benedict
+ruamel.yaml
+pyaml
+pre-commit
+pytest

@@ -1,0 +1,44 @@
+---
+node_type_keys:
+  - key: ce
+    type: ce
+    default_evpn_role: none
+    default_underlay_routing_protocol: none
+    connected_endpoints: true
+    network_services:
+      l3: true
+      l2: true
+    vtep: false
+    
+  - key: p
+    type: p
+    default_mpls_overlay_role: none
+    default_overlay_routing_protocol: ibgp
+    default_underlay_routing_protocol: isis-sr
+    mpls_lsr: true
+
+  - key: pe
+    type: pe
+    mpls_lsr: true
+    connected_endpoints: true
+    default_mpls_overlay_role: client
+    default_evpn_role: client
+    network_services:
+      l2: true
+      l3: true
+    underlay_router: true
+    default_overlay_routing_protocol: ibgp
+    default_underlay_routing_protocol: isis-sr
+    default_overlay_address_families:
+      - evpn
+    default_evpn_encapsulation: mpls
+      
+  - key: rr
+    type: rr
+    mpls_lsr: true
+    default_mpls_overlay_role: server
+    default_overlay_routing_protocol: ibgp
+    default_underlay_routing_protocol: isis-sr
+    default_overlay_address_families:
+      - evpn
+    default_evpn_encapsulation: mpls

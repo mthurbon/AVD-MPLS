@@ -1,0 +1,68 @@
+---
+all:
+  children:
+    CVP:
+      hosts:
+        CVAAS:
+          ansible_host: 192.168.0.5
+          ansible_user: cvpadmin
+          ansible_password: cvp123!
+          ansible_connection: httpapi
+          ansible_httpapi_use_ssl: true
+          ansible_httpapi_validate_certs: false
+          ansible_network_os: eos
+
+
+#Core Definitions
+    GROQ:
+      children:
+        MPLS_CORE:
+          children:
+            CORE:
+              children:
+                LSR:
+                  hosts:
+                    PE-03:
+                      ansible_host: 192.168.0.103
+                      is_deployed: true
+                    PE-04:
+                      ansible_host: 192.168.0.104
+                      is_deployed: true
+                    PE-06:
+                      ansible_host: 192.168.0.106
+                      is_deployed: true
+                LER:
+                  hosts:
+                    PE-07:
+                      ansible_host: 192.168.0.107
+                      is_deployed: true
+                    PE-08:
+                      ansible_host: 192.168.0.108
+                      is_deployed: true
+                    PE-09:
+                      ansible_host: 192.168.0.109
+                      is_deployed: true
+                    PE-10:
+                      ansible_host: 192.168.0.110
+                      is_deployed: true
+#               RR:
+#                  hosts:
+#                    rr-1:
+#                      ansible_host: 192.168.0.19
+#                      is_deployed: true
+                CE:
+                  hosts:
+                    CE-01:
+                      ansible_host: 192.168.0.101
+                      is_deployed: true
+                    CE-02:
+                      ansible_host: 192.168.0.102
+                      is_deployed: true
+        MPLS_TENANTS_NETWORKS:
+          children:
+            LER:
+            CE:
+#        MPLS_CONNECTED_ENDPOINTS:
+#          children:
+#            LER:
+#           CE:

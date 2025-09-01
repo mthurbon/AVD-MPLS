@@ -1,0 +1,63 @@
+---
+local_users:
+  - name: cvpadmin
+    privilege: 15
+    role: network-admin
+   # Password set to "cvp123!". Same string as the device generates when configuring a username.
+    sha512_password: $6$g660X2pyq2pCKA6b$rosLMnSxCf038K1DIyf5YDjKpZSrN.k3CK5MpmC8VfKh1NEc3Ck4rsp07v52PAbURXiT822UcTSl9cmBuQ1Er.
+#  - name: admin
+#    privilege: 15
+#    role: network-admin
+#    # Password set to "admin"
+#    sha512_password: $6$IJv960K6ZAR/Nz1d$8QVcZ2pv7IgEN2ax4WA88GkIvk28X0n8SOt6QAFbt25c6TGnEHSnvQCta6uRBoS2VQhfJR.yoxqKAj3vBqBmi/
+
+csc_daemon_terminattr:
+  cvaddrs:
+    - 192.168.0.5:9910
+  cvauth:
+    method: "token"
+    token_file: /tmp/token
+  cvvrf: default
+  taillogs:
+  smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+
+
+# Management vrf is MGMT change to use default
+mgmt_interface_vrf: default
+mgmt_destination_networks: 
+  - 0.0.0.0/0
+mgmt_gateway: 192.168.0.6
+
+csc_management_ssh:
+  enable: true
+  # vrfs:
+  #   - name: default
+  #     enable: true
+
+csc_logging:
+  console: "debugging"
+
+csc_terminal:
+  length: 45
+
+csc_management_interfaces:
+  - name: Management1
+    lldp:
+      transmit: false
+      receive: false
+
+#DNS Settings
+# csc_dns_domain: lab.net
+
+# name_servers:
+#   - 8.8.8.8
+
+# NTP Settings
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
+  servers:
+    - name: 192.168.0.6
+
+
+# Time zone setting
+timezone: Australia/Sydney 
