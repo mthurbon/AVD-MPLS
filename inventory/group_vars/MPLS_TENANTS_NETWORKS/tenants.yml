@@ -64,18 +64,6 @@ tenants: # dynamic_key: network_services
             description: to-CE-02
             nodes:
               - PE-10
-#          - ip_address: 1.1.1.4
-#            remote_as: 65900
-#            send_community: extended
-#            description: ebgp-to-pe-1
-#            nodes:
-#              - ce-2
-#          - ip_address: 1.1.1.5
-#            remote_as: 65801
-#            send_community: extended
-#            description: ebgp-to-ce-2
-#            nodes:
-#              - pe-1
         svis:
           - id: 100
             name: Vlan_100_groq_inside
