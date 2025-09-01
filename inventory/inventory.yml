@@ -22,9 +22,9 @@ all:
               children:
                 LSR:
                   hosts:
-                    PE-03:
-                      ansible_host: 192.168.0.103
-                      is_deployed: true
+#                    PE-03:
+#                      ansible_host: 192.168.0.103
+#                      is_deployed: true
                     PE-04:
                       ansible_host: 192.168.0.104
                       is_deployed: true
@@ -45,11 +45,11 @@ all:
                     PE-10:
                       ansible_host: 192.168.0.110
                       is_deployed: true
-#               RR:
-#                  hosts:
-#                    rr-1:
-#                      ansible_host: 192.168.0.19
-#                      is_deployed: true
+                RR:
+                  hosts:
+                    RR-03:
+                      ansible_host: 192.168.0.103
+                      is_deployed: true
                 CE:
                   hosts:
                     CE-01:

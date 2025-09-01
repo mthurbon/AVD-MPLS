@@ -4,12 +4,12 @@ type: rr
 rr: # dynamic_key: node_type
   defaults:
     platform: vEOS-lab
-    loopback_ipv4_pool: 10.9.0.0/25
-    bgp_as: 65900
+    loopback_ipv4_pool: 10.1.0.0/25
+    bgp_as: 65100
     overlay_address_families:
       - evpn
 
   nodes:
-    - name: rr-1
-      id: 10
-      mgmt_ip: 192.168.0.19/24
+    - name: RR-03
+      id: 03
+      mgmt_ip: 192.168.0.103/24

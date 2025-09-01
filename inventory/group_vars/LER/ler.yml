@@ -9,7 +9,7 @@ pe: # dynamic_key: node_type
     platform: vEOS-lab
     loopback_ipv4_pool: 10.1.0.0/25
     bgp_as: 65900
-    mpls_route_reflectors: [ PE-09 ]
+    mpls_route_reflectors: [ RR-03 ]
     overlay_address_families:
       - evpn
     

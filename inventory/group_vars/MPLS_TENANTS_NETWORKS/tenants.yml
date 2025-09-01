@@ -4,7 +4,7 @@ tenants: # dynamic_key: network_services
     mac_vrf_id_base: 2000
     vrfs:
       - name: groq-inside
-        vrf_id: 900
+        vrf_id: 800
         enable_mlag_ibgp_peering_vrfs: false
         address_families:
           - evpn
@@ -16,113 +16,78 @@ tenants: # dynamic_key: network_services
             ip_addresses: [ 1.1.1.4/31, 1.1.1.6/31, 1.1.1.5/31, 1.1.1.7/31 ]
             nodes: [ CE-02, CE-02, PE-09, PE-10 ]
         bgp_peers:
-          - ip_address: 1.1.1.0
-            remote_as: 65901
-            send_community: extended
-            description: ebgp-to-pe-3
-            nodes:
-              - ce-1
-          - ip_address: 1.1.1.2
-            remote_as: 65901
-            send_community: extended
-            description: ebgp-to-pe-4
-            nodes:
-              - ce-1
           - ip_address: 1.1.1.1
-            remote_as: 65801
+            remote_as: 65800
             send_community: extended
-            description: ebgp-to-ce-1
+            description: to-PE-07
             nodes:
-              - pe-3
+              - CE-01
           - ip_address: 1.1.1.3
-            remote_as: 65801
+            remote_as: 65800
             send_community: extended
-            description: ebgp-to-ce-1
+            description: to-PE-08
             nodes:
-              - pe-4
-          - ip_address: 1.1.1.4
-            remote_as: 65900
+              - CE-01
+          - ip_address: 1.1.1.0
+            remote_as: 65800
             send_community: extended
-            description: ebgp-to-pe-1
+            description: to-CE-01
             nodes:
-              - ce-2
+              - PE-07
+          - ip_address: 1.1.1.2
+            remote_as: 65800
+            send_community: extended
+            description: to-CE-01
+            nodes:
+              - PE-08
           - ip_address: 1.1.1.5
-            remote_as: 65801
+            remote_as: 65800
             send_community: extended
-            description: ebgp-to-ce-2
+            description: to-PE-09
             nodes:
-              - pe-1
+              - CE-02
+          - ip_address: 1.1.1.7
+            remote_as: 65800
+            send_community: extended
+            description: to-PE-10
+            nodes:
+              - CE-02
+          - ip_address: 1.1.1.4
+            remote_as: 65800
+            send_community: extended
+            description: to-CE-02
+            nodes:
+              - PE-09
+          - ip_address: 1.1.1.6
+            remote_as: 65800
+            send_community: extended
+            description: to-CE-02
+            nodes:
+              - PE-10
+#          - ip_address: 1.1.1.4
+#            remote_as: 65900
+#            send_community: extended
+#            description: ebgp-to-pe-1
+#            nodes:
+#              - ce-2
+#          - ip_address: 1.1.1.5
+#            remote_as: 65801
+#            send_community: extended
+#            description: ebgp-to-ce-2
+#            nodes:
+#              - pe-1
         svis:
           - id: 100
             name: Vlan_100_groq_inside
-            tags: [ ce-1 ]
+            tags: [ CE-01 ]
             nodes:
-              - node: ce-1
+              - node: CE-01
                 enabled: true
                 ip_address: 172.16.100.1/24
           - id: 200
             name: Vlan_200_groq_inside
-            tags: [ ce-2 ]
+            tags: [ CE-02 ]
             nodes:
-              - node: ce-2
+              - node: CE-02
                 enabled: true
                 ip_address: 172.16.200.1/24
-
-
----
-tenants:
-  # Definition of tenants. Additional level of abstraction to VRFs
-  - name: CUSTOMER1
-    vrfs:
-      # VRF definitions inside the tenant.
-      - name: C1_VRF1
-        # VRF ID definition.
-        vrf_id: 10
-        # Select address families for the VRF.
-        address_families:
-          - vpn-ipv4
-        # Enable OSPF on selected PEs in the VRF.
-        ospf:
-          enabled: true
-          nodes:
-            - pe1
-            - pe2
-            - pe3
-        l3_interfaces:
-          # L3 interfaces
-          - interfaces: [ Ethernet3.10, Ethernet4.10, Ethernet2 ]
-            nodes: [ pe1, pe2, pe3 ]
-            description: C1_L3_SERVICE
-            enabled: true
-            ip_addresses: [ 10.0.1.1/29, 10.0.1.2/29, 10.0.1.9/30 ]
-            # Enable OSPF on the interfaces.
-            ospf:
-              enabled: true
-
-  - name: CUSTOMER2
-    vrfs:
-      - name: C2_VRF1
-        vrf_id: 20
-        address_families:
-          - vpn-ipv4
-        l3_interfaces:
-          # L3 interfaces
-          - interfaces: [ Ethernet3.20, Ethernet4.20, Ethernet4 ]
-            nodes: [ pe1, pe2, pe3 ]
-            description: C2_L3_SERVICE
-            enabled: true
-            ip_addresses: [ 10.1.1.1/29, 10.1.1.2/29, 10.1.1.9/30 ]
-        # Define BGP peers inside the VRF.
-        bgp_peers:
-          - ip_address: 10.1.1.3
-            remote_as: 65123
-            description: C2_ROUTER1
-            send_community: standard
-            maximum_routes: 100
-            nodes: [ pe1, pe2 ]
-          - ip_address: 10.1.1.10
-            remote_as: 65124
-            description: C2_ROUTER2
-            send_community: standard
-            maximum_routes: 100
-            nodes: [ pe3 ]

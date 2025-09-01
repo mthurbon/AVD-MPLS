@@ -10,7 +10,7 @@ core_interfaces:
 
   p2p_links:
 #MPLS CORE
-    - nodes: [ PE-07, PE-03 ]
+    - nodes: [ PE-07, RR-03 ]
       interfaces: [ Ethernet3, Ethernet7/1 ]
       profile: core_profile
       id: 1
@@ -26,19 +26,19 @@ core_interfaces:
       interfaces: [ Ethernet4, Ethernet8/1 ]
       profile: core_profile
       id: 4
-    - nodes: [ PE-08, PE-03 ]
+    - nodes: [ PE-08, RR-03 ]
       interfaces: [ Ethernet3, Ethernet8/1 ]
       profile: core_profile
       id: 5
-    - nodes: [ PE-03, PE-09 ]
+    - nodes: [ RR-03, PE-09 ]
       interfaces: [ Ethernet9/1, Ethernet3/1 ]
       profile: core_profile
       id: 6
-    - nodes: [ PE-03, PE-10 ]
+    - nodes: [ RR-03, PE-10 ]
       interfaces: [ Ethernet10/1, Ethernet3/1 ]
       profile: core_profile
       id: 7
-    - nodes: [ PE-03, PE-04 ]
+    - nodes: [ RR-03, PE-04 ]
       interfaces: [ Ethernet4/1, Ethernet3/1 ]
       profile: core_profile
       id: 8

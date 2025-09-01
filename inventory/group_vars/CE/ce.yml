@@ -15,7 +15,7 @@ ce:
         tags: [ CE-01 ]
     - name: CE-02
       id: 2
-      bgp_as: 65801
+      bgp_as: 65800
       filter:
         tags: [ CE-02 ]
       mgmt_ip: 192.168.0.102/24
